@@ -26,6 +26,6 @@
         <input type="password" name="password" required>
         <label for="password_repeat">password</label>
         <input type="password" name="password_repeat" required>
-        <button type="submit">login</button>
+        <button type="submit">register</button>
     </form>
 @endsection

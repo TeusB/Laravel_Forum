@@ -27,7 +27,6 @@ Route::get(
     [AuthenticationController::class, 'showRegister']
 )->name('showRegister');
 
-
 Route::get(
     '/createComment',
     [CommentController::class, 'showCreateComment']
@@ -41,8 +40,12 @@ Route::get(
 Route::get(
     '/postIndex',
     [PostController::class, 'showPostIndex']
-)->name('showPostIndex')->middleware('auth');
+)->name('showPostIndex');
 
+Route::get(
+    '/post',
+    [PostController::class, 'showPost']
+)->name('showPost');
 
 Route::get('/', function () {
     return view('main');
@@ -57,3 +60,13 @@ Route::post(
     '/login',
     [AuthenticationController::class, 'authenticate']
 )->name('authenticateUser');
+
+Route::post(
+    '/createPost',
+    [PostController::class, 'store']
+)->name('createPost')->middleware('auth');
+
+Route::post(
+    '/createComment',
+    [CommentController::class, 'store']
+)->name('createComment')->middleware('auth');
