@@ -14,7 +14,6 @@ class comment extends Model
         'title',
         'content',
         'idPost',
-        'rating'
     ];
 
     protected $hidden = [

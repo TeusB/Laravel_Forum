@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Web;
 
 use Illuminate\Http\Request;
 use App\Models\comment;
@@ -19,14 +19,12 @@ class CommentController extends Controller
         $validate = $request->validate([
             'title' => 'required|min:5|max:50',
             'content' => 'required|min:5|max:1000',
-            'rating' => 'required|integer|max:5',
             'idPost' => 'required|integer',
         ]);
 
         $comment = new Comment();
         $comment->title = $validate["title"];
         $comment->content = $validate["content"];
-        $comment->rating = $validate["rating"];
         $comment->idPost = $validate["idPost"];
         $comment->idUser = auth()->user()->id;
 

@@ -10,10 +10,22 @@
     <br>
     title: {{ $data[0]['title'] }}
     <br>
+    content: {{ $data[0]['content'] }}
+    <br>
+    name: {{$data[0]['user']['name']}}
+    <br>
     <br>
     //comments
     <br>
-    {{ $data[0]['comments'] }}
+    @foreach ($data[0]['comments'] as $item)
+        title: {{ $item['title'] }}
+        <br>
+        content: {{ $item['content'] }}
+        <br>
+        name: {{ $item['user']['name'] }}
+        <br>
+        <br>
+    @endforeach
     <br>
 
     <form id="commentForm">

@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\AuthenticationController;
-use App\Http\Controllers\CommentController;
-use App\Http\Controllers\PostController;
+use App\Http\Controllers\Web\AuthenticationController;
+use App\Http\Controllers\Web\CommentController;
+use App\Http\Controllers\Web\PostController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -56,6 +56,10 @@ Route::get(
 Route::get('/', function () {
     return view('main');
 })->name('showMain');
+
+Route::get('/calls', function () {
+    return view('calls');
+})->name('test');
 
 Route::post(
     '/register',
