@@ -26,7 +26,7 @@ class UserController extends Controller
 
             $validatedData = $validator->validate();
         } catch (ValidationException $ex) {
-            $error = $ex->validator->errors()->first();
+            $error = $ex->validator->errors();
             return response()->json(
                 [
                     'error' => $error,

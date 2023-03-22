@@ -34,7 +34,7 @@ class AuthenticationController extends Controller
 
             $validatedData = $validator->validate();
         } catch (ValidationException $ex) {
-            $error = $ex->validator->errors()->first();
+            $error = $ex->validator->errors();
             return response()->json(
                 [
                     'error' => $error,
@@ -50,6 +50,7 @@ class AuthenticationController extends Controller
             $token = $user->createToken('token')->plainTextToken;
             return response()->json(
                 [
+                    'idUser' => $user->id,
                     'token' => $token,
                 ],
                 200,
