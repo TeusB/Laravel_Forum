@@ -28,11 +28,11 @@
 }
 
 .nested-enter-active {
-    transition-delay: 0.15s;
+    transition-delay: 0.10s;
 }
 
 .nested-leave-active {
-    transition-delay: 0.15s;
+    transition-delay: 0.10s;
 }
 
 .nested-enter-from,
@@ -182,4 +182,7 @@
     transform: translateX(30px);
     opacity: 0.001;
 }
+
+
+
 </style>

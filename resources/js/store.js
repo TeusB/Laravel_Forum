@@ -6,7 +6,7 @@ const store = createStore({
         homeFooter: false,
         LoggedIn: false,
         dashboardNavbar: false,
-        showSidebar: true,
+        showSidebar: false,
         isMobile: false,
         isTablet: false,
     },
@@ -44,10 +44,10 @@ const store = createStore({
                 state.LoggedIn = false;
             }
         },
-        setIsMobile(state, bool) { 
+        setIsMobile(state, bool) {
             state.isMobile = bool;
         },
-        setIsTablet(state, bool) { 
+        setIsTablet(state, bool) {
             state.isTablet = bool;
         },
     },
@@ -55,7 +55,7 @@ const store = createStore({
 
 store.commit('checkApiToken');
 store.commit('setIsMobile', window.innerWidth < 850);
-store.commit('setIsTablet', window.innerWidth < 850);
+store.commit('setIsTablet', window.innerWidth < 850 && window.innerWidth > 600);
 
 window.addEventListener('resize', () => {
     store.commit('setIsMobile', window.innerWidth < 850);

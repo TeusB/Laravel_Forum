@@ -5,7 +5,7 @@
             <div v-if="errorMessage" class="invalid-feedback">
                 {{ errorMessage }}
             </div>
-            <Form @submit="login" ref="form" class="form inner" v-slot="{ errors }">
+            <Form @submit="login" ref="form" class="form innerRight" v-slot="{ errors }">
                 <div class="inputDiv">
                     <label for="email">Email</label>
                     <Field class="form-control" name="email" autocomplete="username" type="email"

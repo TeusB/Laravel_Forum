@@ -1,31 +1,44 @@
+
+
 <template>
     <div class="keeper proAni">
         <transition name="nestedLeft" mode="out-in">
-            <sidebar class="innerLeft leftSide"
-                v-bind:class="{ 'width0': !showSidebar, 'absolute': isMobile, 'col-2': showSidebar && !isMobile, 'col-8': showSidebar && isMobile && !isTablet, 'col-4': showSidebar && isMobile && isTablet, }">
-            </sidebar>
+            <sidebar class="innerLeft leftSide" v-bind:class="{
+                'width0': !showSidebar,
+                'absolute': isMobile,
+                'col-2': showSidebar && !isMobile,
+                'col-8': showSidebar && isMobile && !isTablet,
+                'col-4': showSidebar && isMobile && isTablet,
+            }"></sidebar>
         </transition>
         <div class="rightSide" v-bind:class="{ 'col-12': !showSidebar || isMobile, 'col-10': showSidebar && !isMobile }">
+            <div v-if="showSidebar && isMobile" class="blackTrans" v-on:click="toggleActive"></div>
             <transition name="nestedTop" mode="out-in">
-                <navbar class="innerTop rightAlign col-12" v-bind:class="{ 'col-4': showSidebar && isMobile, }"></navbar>
+                <navbar class="innerTop rightAlign col-12" v-bind:class="{ 'col-4': showSidebar && isMobile }"></navbar>
             </transition>
-            <div v-on:click="toggleActiveIfSide" class="scrollContent innerRight"
-                v-bind:class="{ 'fague': showSidebar && isMobile }">
+            <div class="scrollContent innerRight">
                 <div class="container-fluid">
                     <router-view v-slot="{ Component }">
                         <transition name="nested" mode="out-in">
-                            <component :is="Component" />
+                            <div v-if="isLoading" class="spinnerContainer d-flex align-items-center justify-content-center">
+                                <div class="spinner-border text-primary" style="width: 4rem; height: 4rem;" role="status">
+                                    <span class="sr-only"></span>
+                                </div>
+                            </div>
+                            <component :is="Component" v-else></component>
                         </transition>
                     </router-view>
                 </div>
                 <footerVue class="innerBottom"></footerVue>
             </div>
+
         </div>
     </div>
 </template>
+  
 <script>
 import { mapState } from 'vuex';
-import store from '../store.js'
+import store from '../store.js';
 
 import sidebar from './components/sidebar.vue';
 import footerVue from './components/footer.vue';
@@ -36,6 +49,12 @@ export default {
         sidebar,
         footerVue,
         navbar,
+    },
+    data() {
+        return {
+            isLoading: false,
+            Component: null,
+        };
     },
     methods: {
         toggleActive() {
@@ -49,11 +68,37 @@ export default {
     },
     computed: {
         ...mapState({
-            dashboardNavbar: state => state.dashboardNavbar,
-            showSidebar: state => state.showSidebar,
-            isMobile: state => state.isMobile,
-            isTablet: state => state.isTablet,
+            dashboardNavbar: (state) => state.dashboardNavbar,
+            showSidebar: (state) => state.showSidebar,
+            isMobile: (state) => state.isMobile,
+            isTablet: (state) => state.isTablet,
         }),
+    },
+    created() {
+        if (!this.isMobile) {
+            store.commit('toggleSidebar');
+        }
+    },
+    beforeRouteUpdate(to, from, next) {
+        this.isLoading = true;
+        next();
+        setTimeout(() => {
+            this.isLoading = false
+        }, 1000)
+    },
+    beforeRouteUpdate(to, from, next) {
+        this.isLoading = true;
+        next();
+        setTimeout(() => {
+            this.isLoading = false
+        }, 1000)
+    },
+    mounted() {
+        this.isLoading = true;
+
+        setTimeout(() => {
+            this.isLoading = false
+        }, 1000)
     },
 };
 </script>
@@ -61,6 +106,22 @@ export default {
 <style>
 .keeper {
     display: flex;
+}
+
+.innerRightContainer {
+    height: 100%;
+}
+
+.spinnerContainer {
+    height: 90%;
+    width: 100%;
+}
+
+.blackTrans {
+    background-color: rgb(0 0 0 / 37%);
+    height: 100vh;
+    width: 100%;
+    position: absolute;
 }
 
 .rightAlign {
@@ -75,10 +136,6 @@ export default {
 .fague {
     background: rgba(0, 0, 0, 0.6);
     opacity: 1;
-    transition: opacity 0.5s;
-    -webkit-transition: opacity 0.5s;
-    -moz-transition: opacity 0.5s;
-
 
 }
 

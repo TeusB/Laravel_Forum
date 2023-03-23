@@ -1,5 +1,5 @@
 <template>
-    <div class="flexBox" style="height: 1500px; !important;">
+    <div class="flexBox">
         <div class="blackBox">
             <h1 class="h1Header">insert Post</h1>
             <div v-if="errorMessage" class="invalid-feedback">

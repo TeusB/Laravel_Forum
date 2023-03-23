@@ -188,7 +188,7 @@ export default {
     display: flex;
     flex-direction: row;
     background-color: aqua;
-    /* position: fixed; */
+    position: fixed;
     width: 100%;
     z-index: 999;
 }

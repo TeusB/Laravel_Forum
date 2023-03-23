@@ -7,16 +7,28 @@
             </RouterLink>
             <div v-if="isMobile" class="col-4 d-flex justify-content-center mt-2" v-on:click="toggleActive">X</div>
         </div>
-        <div class="d-flex flex-column">
-            <RouterLink :to="{ name: 'dashboardIndex' }" v-on:click="toggleActive">
-                home
-            </RouterLink>
-            <RouterLink :to="{ name: 'dashboardMakePost' }" v-on:click="toggleActive">
-                post1
-            </RouterLink>
-            <RouterLink :to="{ name: 'dashboardMakePost2' }" v-on:click="toggleActive">
-                post2
-            </RouterLink>
+        <div class="nav nav-pills flex-column mb-auto p-3">
+            <div class="nav-item">
+                <RouterLink class="nav-link" :to="{ name: 'dashboardIndex' }" v-on:click="toggleActive"
+                    exact-active-class="active" active-class="active">
+                    <!-- <svg class="bi bi-house" width="16" height="16">
+                    </svg> -->
+                    home
+                </RouterLink>
+            </div>
+            <div class="nav-item">
+                <RouterLink class="nav-link" :to="{ name: 'dashboardMakePost' }" v-on:click="toggleActive"
+                    exact-active-class="active" active-class="active">
+                    post1
+                </RouterLink>
+            </div>
+            <div class="nav-item">
+                <RouterLink class="nav-link" :to="{ name: 'dashboardMakePost2' }" v-on:click="toggleActive"
+                    exact-active-class="active" active-class="active">
+                    post2
+                </RouterLink>
+            </div>
+
         </div>
 
     </div>

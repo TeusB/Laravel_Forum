@@ -3,7 +3,7 @@
     <transition name="nestedTop" mode="out-in">
       <navbar class="innerTop"></navbar>
     </transition>
-    <div class="scrollContent">
+    <div class="scrollContent marginTop">
       <router-view v-slot="{ Component }">
         <transition name="nestedRight" mode="out-in">
           <component class="innerRight" :is="Component" />
@@ -36,5 +36,8 @@ export default {
   height: 100vh;
   display: flex;
   flex-direction: column;
+}
+.marginTop {
+  margin-top: 100px;
 }
 </style>
