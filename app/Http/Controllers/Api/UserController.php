@@ -7,12 +7,54 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Api\Controller;
+use App\Http\Resources\UserProfileResource;
+use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use App\Rules\UniqueCustom;
 
 class UserController extends Controller
 {
+    public function get(Request $request)
+    {
+        $this->authorize('view', $user = User::findorFail($request->user()->id));
+        return response()->json(
+            [
+                'user' => new UserProfileResource($user),
+            ],
+            200,
+        );
+    }
+
+    public function update(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'name' => ['required', new UniqueCustom("users", "name")]
+            ])->stopOnFirstFailure();
+
+            $validatedData = $validator->validate();
+        } catch (ValidationException $ex) {
+            $error = $ex->validator->errors();
+            return response()->json(
+                [
+                    'error' => $error,
+                ],
+                $ex->status
+            );
+        }
+        $user = User::findorFail($request->user()->id);
+        $user->name = $validatedData["name"];
+
+        if ($user->save()) {
+            return response()->json(
+                [
+                    'success' => 'account is gewijzigd',
+                ],
+                200,
+            );
+        }
+    }
 
     public function store(Request $request)
     {
@@ -60,5 +102,4 @@ class UserController extends Controller
             500
         );
     }
-
 }

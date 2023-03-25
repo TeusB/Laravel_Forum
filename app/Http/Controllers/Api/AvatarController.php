@@ -46,7 +46,8 @@ class AvatarController extends Controller
         if ($user->save()) {
             return response()->json(
                 [
-                    'messsage' => "your account has been updated",
+                    'messsage' => "your profileIMG has been updated",
+                    'profileIMG' => $imageStoreName,
                 ],
                 200
             );

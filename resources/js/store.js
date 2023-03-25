@@ -9,6 +9,7 @@ const store = createStore({
         showSidebar: false,
         isMobile: false,
         isTablet: false,
+        user: [],
     },
     mutations: {
         toggleHomeNavbar(state, bool) {
@@ -25,6 +26,16 @@ const store = createStore({
         },
         putIdUser(state, idUser) {
             sessionStorage.setItem('idUser', idUser);
+        },
+        putUser(state, user) {
+            state.user = user;
+            console.log(user);
+        },
+        updateUserProperty(state, payload) {
+            state.user = {
+                ...state.user,
+                ...payload
+            }
         },
         putApiKey(state, token) {
             sessionStorage.setItem('API_KEY', token);

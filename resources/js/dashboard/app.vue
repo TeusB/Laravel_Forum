@@ -39,7 +39,7 @@
 <script>
 import { mapState } from 'vuex';
 import store from '../store.js';
-
+import axios from '../axios';
 import sidebar from './components/sidebar.vue';
 import footerVue from './components/footer.vue';
 import navbar from './components/navbar.vue';
@@ -72,19 +72,25 @@ export default {
             showSidebar: (state) => state.showSidebar,
             isMobile: (state) => state.isMobile,
             isTablet: (state) => state.isTablet,
+            user: (state) => state.user,
         }),
+
     },
     created() {
         if (!this.isMobile) {
             store.commit('toggleSidebar');
         }
-    },
-    beforeRouteUpdate(to, from, next) {
-        this.isLoading = true;
-        next();
-        setTimeout(() => {
-            this.isLoading = false
-        }, 1000)
+        axios.get('user', {
+            headers: {
+                Authorization: `Bearer ${sessionStorage.getItem('API_KEY')}`
+            }
+        })
+            .then(response => {
+                store.commit('putUser', response.data.user);
+            })
+            .catch(error => {
+                console.log(error);
+            });
     },
     beforeRouteUpdate(to, from, next) {
         this.isLoading = true;
@@ -94,11 +100,11 @@ export default {
         }, 1000)
     },
     mounted() {
-        this.isLoading = true;
+        // this.isLoading = true;
 
-        setTimeout(() => {
-            this.isLoading = false
-        }, 1000)
+        // setTimeout(() => {
+        //     this.isLoading = false
+        // }, 1000)
     },
 };
 </script>
@@ -122,6 +128,7 @@ export default {
     height: 100vh;
     width: 100%;
     position: absolute;
+    z-index: 2;
 }
 
 .rightAlign {
@@ -131,12 +138,6 @@ export default {
 
 .absolute {
     position: absolute;
-}
-
-.fague {
-    background: rgba(0, 0, 0, 0.6);
-    opacity: 1;
-
 }
 
 .rightSide {
@@ -152,7 +153,7 @@ export default {
     transition: width 0.3s ease-in-out;
     overflow-y: auto;
     overflow-x: hidden;
-    z-index: 1;
+    z-index: 3;
 }
 
 .width0 {

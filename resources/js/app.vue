@@ -10,6 +10,10 @@
 </template>
   
 <style>
+.displayTrue {
+    display: block !important;
+}
+
 .scrollContent {
     overflow-y: auto;
     height: 2500px;

@@ -51,7 +51,6 @@ export default {
             }
         })
             .then(response => {
-                console.log(response);
                 this.posts = response.data.posts;
             })
             .catch(error => {

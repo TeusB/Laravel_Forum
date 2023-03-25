@@ -9,6 +9,8 @@ import dashboardProfile from './dashboard/views/profile.vue';
 import dashboardIndex from './dashboard/views/index.vue';
 import dashboardMakePost from './dashboard/views/makePost.vue';
 import dashboardMakePost2 from './dashboard/views/makePost2.vue'
+import dashboardCropperTest from './dashboard/views/cropperTest.vue'
+
 import dashboardApp from './dashboard/app.vue';
 
 import store from './store';
@@ -55,6 +57,12 @@ const routes = [
                 path: '',
                 component: dashboardIndex,
                 name: 'dashboardIndex',
+                meta: { requiresAuth: true, dashboardNavbar: true, }
+            },
+            {
+                path: 'cropperTest',
+                component: dashboardCropperTest,
+                name: 'dashboardCropperTest',
                 meta: { requiresAuth: true, dashboardNavbar: true, }
             },
             {

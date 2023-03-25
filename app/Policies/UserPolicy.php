@@ -26,7 +26,7 @@ class UserPolicy
      */
     public function view(User $user, User $model): bool
     {
-        //
+        return $user->id === $model->id;
     }
 
     /**

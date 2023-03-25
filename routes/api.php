@@ -14,6 +14,8 @@ route::post('/register', [UserController::class, 'store']); //creates account
 
 
 Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/update.user', [UserController::class, 'update']); //updates post
+    Route::get('/user', [UserController::class, 'get']); //gets user info
     Route::post('/store.comment', [CommentController::class, 'store']); //inserts post
     Route::post('/update.password', [PasswordController::class, 'update']); //update user password
     Route::post('/update.profileIMG', [AvatarController::class, 'update']); //update userIMG
