@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Api\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use App\Http\Resources\UserAuthenticateResource;
 
 class AuthenticationController extends Controller
 {
@@ -23,10 +24,20 @@ class AuthenticationController extends Controller
         );
     }
 
+    public function get(Request $request)
+    {
+        $user = User::findorFail($request->user()->id);
+        return response()->json(
+            [
+                'user' => new UserAuthenticateResource($user),
+            ],
+            200,
+        );
+    }
+
     public function authenticate(Request $request)
     {
         try {
-
             $validator = Validator::make($request->all(), [
                 'email' => 'required',
                 'password' => 'required',
@@ -43,15 +54,11 @@ class AuthenticationController extends Controller
             );
         }
 
-        $credentials = $request->only('email', 'password');
-
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt($request->only('email', 'password'))) {
             $user = User::where('email', $validatedData['email'])->firstOrFail();
-            $token = $user->createToken('token')->plainTextToken;
             return response()->json(
                 [
-                    'idUser' => $user->id,
-                    'token' => $token,
+                    "token" => $user->createToken('token')->plainTextToken
                 ],
                 200,
             );

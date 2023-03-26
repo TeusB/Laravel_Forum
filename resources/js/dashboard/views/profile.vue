@@ -1,12 +1,12 @@
 <template>
-    <div class="d-row gutters-sm" v-if="user">
+    <div class="d-row gutters-sm" v-if="userForm">
         <div class="d-row flex">
             <div class="card">
                 <div class="card-body">
                     <div class="d-flex flex-column align-items-center text-center">
                         <img :src="imageUrl" alt="Admin" class="rounded-circle" width="150">
                         <div class="mt-3">
-                            <h4>{{ user.name }}</h4>
+                            <h4>{{ $store.state.user.name }}</h4>
                             <p class="text-secondary mb-1">Senior Full Stack Developer</p>
                             <p class="text-muted font-size-sm">Bay Area, San Francisco, CA</p>
                             <div v-if="errorMessageIMG || successMessageIMG" class="displayTrue"
@@ -53,7 +53,7 @@
                                     <h6 class="mb-0">Email</h6>
                                 </div>
                                 <div class="col-sm-9 text-secondary">
-                                    {{ user.email }}
+                                    {{ $store.state.user.email }}
                                 </div>
                             </div>
                             <div class="buttonDiv">
@@ -76,14 +76,11 @@
 
 <script>
 import { Form, Field } from 'vee-validate';
-import { mapState } from 'vuex';
-
 import axios from '../../axios.js'
 import store from '../../store.js'
 import * as Yup from 'yup';
 
 export default {
-    name: 'updateUser',
     components: {
         Form,
         Field,
@@ -112,7 +109,7 @@ export default {
     created() {
         axios.get('user', {
             headers: {
-                Authorization: `Bearer ${sessionStorage.getItem('API_KEY')}`
+                Authorization: `Bearer ${sessionStorage.getItem('API_TOKEN')}`
             }
         })
             .then(response => {
@@ -123,9 +120,6 @@ export default {
             });
     },
     computed: {
-        ...mapState({
-            user: state => state.user,
-        }),
         imageUrl() {
             return `../../../../avatars/${this.$store.state.user.profileIMG}`;
         }
@@ -140,7 +134,7 @@ export default {
                 if (this.$refs.form.validate()) {
                     const response = await axios.post('update.user', values, {
                         headers: {
-                            Authorization: `Bearer ${sessionStorage.getItem('API_KEY')}`
+                            Authorization: `Bearer ${sessionStorage.getItem('API_TOKEN')}`
                         }
                     })
                     switch (response.status) {
@@ -198,7 +192,7 @@ export default {
                     const response = await axios.post('update.profileIMG', values, {
                         headers: {
                             'Content-Type': 'multipart/form-data',
-                            Authorization: `Bearer ${sessionStorage.getItem('API_KEY')}`
+                            Authorization: `Bearer ${sessionStorage.getItem('API_TOKEN')}`
                         }
                     })
                     switch (response.status) {

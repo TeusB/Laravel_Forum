@@ -2,8 +2,10 @@
     <div class="flexBox">
         <div class="blackBox">
             <h1 class="h1Header">insert Post</h1>
-            <div v-if="errorMessage" class="invalid-feedback">
+            <div v-if="errorMessage || successMessage" class="displayTrue"
+                v-bind:class="{ 'invalid-feedback': errorMessage, 'valid-feedback': successMessage }">
                 {{ errorMessage }}
+                {{ successMessage }}
             </div>
             <Form @submit="addPost" ref="form" class="form inner" v-slot="{ errors }">
                 <div class="inputDiv">
@@ -116,7 +118,6 @@ input {
 import { Form, Field } from 'vee-validate';
 
 import axios from '../../axios.js'
-import store from '../../store.js'
 import * as Yup from 'yup';
 
 export default {
@@ -131,6 +132,7 @@ export default {
             content: Yup.string().required(),
         });
         return {
+            successMessage: '',
             errorMessage: '',
             schema,
             isSubmitting: false,
@@ -138,6 +140,7 @@ export default {
     },
     methods: {
         async addPost(values) {
+            this.successMessage = '',
             this.errorMessage = '';
             this.isSubmitting = true;
             try {
@@ -145,12 +148,13 @@ export default {
                 if (this.$refs.form.validate()) {
                     const response = await axios.post('store.post', values, {
                         headers: {
-                            Authorization: `Bearer ${sessionStorage.getItem('API_KEY')}`
+                            Authorization: `Bearer ${sessionStorage.getItem('API_TOKEN')}`
                         }
                     })
                     switch (response.status) {
                         case 200:
-                            console.log("toegevoegd");
+                            console.log(response);
+                            this.successMessage = response.data.message;
                             break;
                         default:
                             console.log("onbekende success");

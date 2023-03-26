@@ -7,17 +7,18 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use App\Models\Comment;
+use App\Models\Post;
+
 use App\Rules\ExistsCustom;
 
 class CommentController extends Controller
 {
-    public function store(Request $request)
+    public function store(Request $request, $idPost)
     {
         try {
             $validator = Validator::make($request->all(), [
                 'title' => 'required|min:5|max:50',
                 'content' => 'required|min:5|max:1000',
-                'idPost' => ['required', 'integer', new ExistsCustom("post", "id")]
             ])->stopOnFirstFailure();
 
             $validatedData = $validator->validate();
@@ -30,17 +31,18 @@ class CommentController extends Controller
                 $ex->status
             );
         }
+        Post::findorFail($idPost);
 
         $comment = new Comment();
         $comment->title = $validatedData["title"];
         $comment->content = $validatedData["content"];
-        $comment->idPost = $validatedData["idPost"];
+        $comment->idPost = $idPost;
         $comment->idUser = $request->user()->id;
 
         if ($comment->save()) {
             return response()->json(
                 [
-                    'messsage' => "your comment has been added",
+                    'message' => 'your comment has been added',
                 ],
                 200
             );

@@ -80,12 +80,13 @@ export default {
         if (!this.isMobile) {
             store.commit('toggleSidebar');
         }
-        axios.get('user', {
+        axios.get('userStoreInfo', {
             headers: {
-                Authorization: `Bearer ${sessionStorage.getItem('API_KEY')}`
+                Authorization: `Bearer ${sessionStorage.getItem('API_TOKEN')}`
             }
         })
             .then(response => {
+                console.log(response);
                 store.commit('putUser', response.data.user);
             })
             .catch(error => {

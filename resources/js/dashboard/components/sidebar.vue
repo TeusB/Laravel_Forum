@@ -19,15 +19,15 @@
             <div class="nav-item">
                 <RouterLink class="nav-link" :to="{ name: 'dashboardMakePost' }" v-on:click="toggleActive"
                     exact-active-class="active" active-class="active">
-                    post1
+                    add post
                 </RouterLink>
             </div>
-            <div class="nav-item">
+            <!-- <div class="nav-item">
                 <RouterLink class="nav-link" :to="{ name: 'dashboardMakePost2' }" v-on:click="toggleActive"
                     exact-active-class="active" active-class="active">
                     post2
                 </RouterLink>
-            </div>
+            </div> -->
 
         </div>
 

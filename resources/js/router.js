@@ -5,16 +5,34 @@ import homeLogin from './home/views/login.vue';
 import homeRegister from './home/views/register.vue';
 import homeApp from './home/app.vue';
 
-import dashboardProfile from './dashboard/views/profile.vue';
-import dashboardIndex from './dashboard/views/index.vue';
 import dashboardMakePost from './dashboard/views/makePost.vue';
 import dashboardMakePost2 from './dashboard/views/makePost2.vue'
+import dashboardPost from './dashboard/views/post.vue'
+import dashBoardUpdatePost from './dashboard/views/updatePost.vue'
+const dashboardIndex = () => import('./dashboard/views/index.vue');
+const dashboardProfile = () => import('./dashboard/views/profile.vue')
+
+
 import dashboardCropperTest from './dashboard/views/cropperTest.vue'
 
 import dashboardApp from './dashboard/app.vue';
 
 import store from './store';
 import swal from 'sweetalert';
+import axios from './axios';
+
+
+const belongsTo = (to, from, next) => {
+    let owner = to.meta.requiresOwnership
+    axios.get(owner + '/' + to.params.id, {
+        headers: {
+            Authorization: `Bearer ${sessionStorage.getItem('API_TOKEN')}`
+        }
+    }).then(response => {
+        to.params[owner] = response.data;
+        next();
+    })
+};
 
 const routes = [
     {
@@ -77,6 +95,23 @@ const routes = [
                 name: 'dashboardProfile'
             },
             {
+                path: 'post/:id',
+                component: dashboardPost,
+                name: 'dashboardPost',
+                meta: { requiresAuth: true, dashboardNavbar: true, },
+            },
+            {
+                path: 'updatePost/:id',
+                component: dashBoardUpdatePost,
+                name: 'dashboardUpdatePost',
+                meta: {
+                    requiresAuth: true, dashboardNavbar: true, //requiresOwnership: 'post'
+                },
+                props: true,
+                // beforeEnter: belongsTo,
+            },
+
+            {
                 path: 'makePost2',
                 component: dashboardMakePost2,
                 name: 'dashboardMakePost2',
@@ -105,6 +140,7 @@ router.beforeEach((to, from, next) => {
         });
         return;
     }
+
     next();
 });
 

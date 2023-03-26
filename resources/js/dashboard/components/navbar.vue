@@ -1,16 +1,15 @@
 <template>
     <div class="topNav" v-bind:class="{ 'flexDirectionReverse': isMobile && showSidebar }">
-        <div v-show="!showSidebar || (!isMobile || isMobile && !showSidebar)" class="hamburger mx-4 my-4"
+        <div v-show="!showSidebar || (!isMobile || isMobile && !showSidebar)" class="hamburger ms-3 my-4"
             v-on:click="toggleActive">
             <span></span>
             <span></span>
             <span></span>
         </div>
-        <div class="mx-4 my-4">
+        <div class="my-4 me-3">
             <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1"
                 data-bs-toggle="dropdown" aria-expanded="false">
-                <img :src="imageUrl" alt="" width="32" height="32"
-                    class="rounded-circle me-2">
+                <img :src="imageUrl" alt="" width="32" height="32" class="rounded-circle me-2">
                 <strong>{{ user.name }}</strong>
             </a>
             <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
@@ -21,7 +20,7 @@
                 <li>
                     <hr class="dropdown-divider">
                 </li>
-                <li><a class="dropdown-item" href="#">Sign out</a></li>
+                <li><a class="dropdown-item" @click="logout">Sign out</a></li>
             </ul>
         </div>
     </div>
@@ -35,8 +34,19 @@ export default {
     methods: {
         toggleActive() {
             store.commit('toggleSidebar');
-        }
+        },
+        logout() {
+            store.commit('logout');
+            this.$router.push('/login');
+            setTimeout(() => {
+                swal({
+                    title: "Succes",
+                    text: "You have been signed out",
+                    icon: "success",
+                });
+            }, 500)
 
+        }
     },
     computed: {
         ...mapState({

@@ -24,12 +24,8 @@ const store = createStore({
         toggleDashboardNavbar(state, bool) {
             state.dashboardNavbar = bool;
         },
-        putIdUser(state, idUser) {
-            sessionStorage.setItem('idUser', idUser);
-        },
         putUser(state, user) {
             state.user = user;
-            console.log(user);
         },
         updateUserProperty(state, payload) {
             state.user = {
@@ -37,18 +33,19 @@ const store = createStore({
                 ...payload
             }
         },
-        putApiKey(state, token) {
-            sessionStorage.setItem('API_KEY', token);
+        login(state, token) {
+            sessionStorage.setItem('API_TOKEN', token);
             state.LoggedIn = true;
         },
-        deleteApiKey(state) {
-            sessionStorage.removeItem('API_KEY');
+        logout(state) {
+            sessionStorage.removeItem('API_TOKEN');
+            state.user = [];
             state.LoggedIn = false;
         },
         checkApiToken(state) {
             if (
-                sessionStorage.getItem('API_KEY') !== null &&
-                sessionStorage.getItem('API_KEY') !== undefined
+                sessionStorage.getItem('API_TOKEN') !== null &&
+                sessionStorage.getItem('API_TOKEN') !== undefined
             ) {
                 state.LoggedIn = true;
             } else {

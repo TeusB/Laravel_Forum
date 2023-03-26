@@ -1,27 +1,32 @@
 <template>
-    <div class="flexBox">
+    <div class="flexBox" v-if="post">
         <div class="blackBox">
-            <h1 class="h1Header">login</h1>
-            <div v-if="errorMessage" class="invalid-feedback">
+            <h1>update Post</h1>
+            <div v-if="errorMessage || successMessage" class="displayTrue"
+                v-bind:class="{ 'invalid-feedback': errorMessage, 'valid-feedback': successMessage }">
                 {{ errorMessage }}
+                {{ successMessage }}
             </div>
-            <Form @submit="login" ref="form" class="form innerRight" v-slot="{ errors }">
+            created:{{ post.created_at }}
+            <br>
+            updated: {{ post.updated_at }}
+            <Form @submit="updatePost" ref="form" class="form inner" v-slot="{ errors }">
                 <div class="inputDiv">
-                    <label for="email">Email</label>
-                    <Field class="form-control" name="email" autocomplete="username" type="email"
-                        v-bind:class="{ 'is-invalid': errors.email }" />
-                    <div v-if="errors.email" class="invalid-feedback">{{ errors.email }}
+                    <label for="title">Title</label>
+                    <Field class="form-control" name="title" type="text" v-bind:class="{ 'is-invalid': errors.title }"
+                        v-model="post.title" />
+                    <div v-if="errors.title" class="invalid-feedback">{{ errors.title }}
                     </div>
                 </div>
                 <div class="inputDiv">
-                    <label for="password">Password</label>
-                    <Field class="form-control" name="password" type="password" autocomplete="current-password"
-                        v-bind:class="{ 'is-invalid': errors.password }" />
-                    <div v-if="errors.password" class="invalid-feedback">{{ errors.password }}</div>
+                    <label for="content">Content</label>
+                    <Field class="form-control" name="content" type="text" v-bind:class="{ 'is-invalid': errors.content }"
+                        v-model="post.content" />
+                    <div v-if="errors.content" class="invalid-feedback">{{ errors.content }}</div>
                 </div>
                 <div class="buttonDiv">
                     <button class="submitButton" type="submit" v-bind:disabled="isSubmitting">
-                        <span v-if="!isSubmitting">Login</span>
+                        <span v-if="!isSubmitting">Update</span>
                         <span v-else>
                             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                         </span>
@@ -115,9 +120,7 @@ input {
 </style>
 <script>
 import { Form, Field } from 'vee-validate';
-
 import axios from '../../axios.js'
-import store from '../../store.js'
 import * as Yup from 'yup';
 
 export default {
@@ -126,29 +129,59 @@ export default {
         Form,
         Field,
     },
+    props: {
+        post: {
+            type: Object,
+            required: true
+        }
+    },
+    beforeRouteEnter:
+        async (to, from, next) => {
+            await axios.get('post.private/' + to.params.id, {
+                headers: {
+                    Authorization: `Bearer ${sessionStorage.getItem('API_TOKEN')}`
+                }
+            }).then(response => {
+                to.params.post = response.data.post;
+                next();
+            }).catch(error => {
+                next('/dashboard');
+                swal({
+                    title: "Alert",
+                    text: "You are not allowed here",
+                    icon: "warning",
+                });
+            });
+        },
     data() {
         const schema = Yup.object().shape({
-            email: Yup.string().required(),
-            password: Yup.string().required(),
+            title: Yup.string().required(),
+            content: Yup.string().required(),
         });
         return {
+            successMessage: '',
             errorMessage: '',
             schema,
             isSubmitting: false,
         };
     },
     methods: {
-        async login(values) {
+        async updatePost(values) {
+            this.successMessage = '',
             this.errorMessage = '';
             this.isSubmitting = true;
             try {
                 await this.schema.validate(values, { abortEarly: false });
                 if (this.$refs.form.validate()) {
-                    const response = await axios.post('login', values);
+                    const response = await axios.post('update.post/' + this.$route.params.id, values, {
+                        headers: {
+                            Authorization: `Bearer ${sessionStorage.getItem('API_TOKEN')}`
+                        }
+                    })
                     switch (response.status) {
                         case 200:
-                            store.commit('login', response.data.token);
-                            this.$router.push('/dashboard');
+                            console.log(response);
+                            this.successMessage = response.data.message;
                             break;
                         default:
                             console.log("onbekende success");
@@ -164,12 +197,16 @@ export default {
                     });
                     this.$refs.form.setErrors(errors);
                 } else {
+                    console.log(error);
                     switch (error.response.status) {
                         case 422:
-                            this.errorMessage = "foute data parameters gegeven";
+                            this.errorMessage = "wrong parameters for api call";
                             break;
                         case 401:
-                            this.errorMessage = "email of wachtwoord komt niet overeen";
+                            this.errorMessage = "no acces to the api";
+                            break;
+                        case 403:
+                            this.errorMessage = "You are not allowed to do this";
                             break;
                         case 409:
                             const errors = {};

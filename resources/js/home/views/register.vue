@@ -152,7 +152,7 @@ export default {
                     const response = await axios.post('register', values);
                     switch (response.status) {
                         case 201:
-                            store.commit('putApiKey', response.data.token);
+                            store.commit('login', response.data.token);
                             this.$router.push('/dashboard');
                             break;
                         default:

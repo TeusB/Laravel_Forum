@@ -6,9 +6,9 @@ use App\Http\Controllers\Api\Controller;
 use Illuminate\Http\Request;
 use App\Models\post;
 use App\Http\Resources\PostResource;
+use App\Http\Resources\PostResourcePrivate;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
-use App\Rules\ExistsCustom;
 
 class PostController extends Controller
 {
@@ -33,13 +33,36 @@ class PostController extends Controller
         );
     }
 
-    public function update(Request $request)
+
+    public function getPostByIdPrivate($idPost)
+    {
+        $this->authorize('view', $post = Post::findorFail($idPost));
+        return response()->json(
+            [
+                'post' => new PostResourcePrivate($post),
+            ],
+            200,
+        );
+    }
+
+    public function delete($idPost)
+    {
+        $this->authorize('delete', $post = Post::findorFail($idPost));
+        $post->delete();
+        return response()->json(
+            [
+                'message' => "post has been deleted",
+            ],
+            200,
+        );
+    }
+
+    public function update(Request $request, $idPost)
     {
         try {
             $validator = Validator::make($request->all(), [
                 'title' => 'required|min:5|max:50',
                 'content' => 'required|min:5|max:1000',
-                'idPost' => ['required', 'integer', new ExistsCustom("post", "id")]
             ])->stopOnFirstFailure();
 
             $validatedData = $validator->validate();
@@ -53,7 +76,7 @@ class PostController extends Controller
             );
         }
 
-        $this->authorize('update', $post = Post::find($validatedData["idPost"]));
+        $this->authorize('update', $post = Post::findorFail($idPost));
 
         $post->title = $validatedData["title"];
         $post->content = $validatedData["content"];
@@ -61,7 +84,7 @@ class PostController extends Controller
         if ($post->save()) {
             return response()->json(
                 [
-                    'messsage' => "your post has been updated",
+                    'message' => "your post has been updated",
                 ],
                 200
             );
@@ -85,7 +108,7 @@ class PostController extends Controller
 
             $validatedData = $validator->validate();
         } catch (ValidationException $ex) {
-            $error = $ex->validator->errors()->first();
+            $error = $ex->validator->errors();
             return response()->json(
                 [
                     'error' => $error,
@@ -102,7 +125,7 @@ class PostController extends Controller
         if ($post->save()) {
             return response()->json(
                 [
-                    'messsage' => "your post has been added",
+                    'message' => "your post has been added",
                 ],
                 200
             );

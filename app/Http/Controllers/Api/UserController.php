@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Api\Controller;
 use App\Http\Resources\UserProfileResource;
-use App\Http\Resources\UserResource;
+use App\Http\Resources\UserAuthenticateResource;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use App\Rules\UniqueCustom;
@@ -85,10 +85,9 @@ class UserController extends Controller
         if ($user->save()) {
             $credentials = $request->only('email', 'password');
             if (Auth::attempt($credentials)) {
-                $token = $user->createToken('token')->plainTextToken;
                 return response()->json(
                     [
-                        'token' => $token,
+                        "token" => $user->createToken('token')->plainTextToken,
                     ],
                     201,
                 );
