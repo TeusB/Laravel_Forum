@@ -6,14 +6,12 @@ import homeRegister from './home/views/register.vue';
 import homeApp from './home/app.vue';
 
 import dashboardMakePost from './dashboard/views/makePost.vue';
-import dashboardMakePost2 from './dashboard/views/makePost2.vue'
 import dashboardPost from './dashboard/views/post.vue'
 import dashBoardUpdatePost from './dashboard/views/updatePost.vue'
 const dashboardIndex = () => import('./dashboard/views/index.vue');
 const dashboardProfile = () => import('./dashboard/views/profile.vue')
 
 
-import dashboardCropperTest from './dashboard/views/cropperTest.vue'
 
 import dashboardApp from './dashboard/app.vue';
 
@@ -78,12 +76,6 @@ const routes = [
                 meta: { requiresAuth: true, dashboardNavbar: true, }
             },
             {
-                path: 'cropperTest',
-                component: dashboardCropperTest,
-                name: 'dashboardCropperTest',
-                meta: { requiresAuth: true, dashboardNavbar: true, }
-            },
-            {
                 path: 'makePost',
                 component: dashboardMakePost,
                 name: 'dashboardMakePost',
@@ -109,13 +101,6 @@ const routes = [
                 },
                 props: true,
                 // beforeEnter: belongsTo,
-            },
-
-            {
-                path: 'makePost2',
-                component: dashboardMakePost2,
-                name: 'dashboardMakePost2',
-                meta: { requiresAuth: true, dashboardNavbar: true, },
             },
         ]
     }

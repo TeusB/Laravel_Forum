@@ -22,12 +22,6 @@
                     add post
                 </RouterLink>
             </div>
-            <!-- <div class="nav-item">
-                <RouterLink class="nav-link" :to="{ name: 'dashboardMakePost2' }" v-on:click="toggleActive"
-                    exact-active-class="active" active-class="active">
-                    post2
-                </RouterLink>
-            </div> -->
 
         </div>
 
