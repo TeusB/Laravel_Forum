@@ -1,5 +1,5 @@
 <template>
-    <div class="container flexBox">
+    <div class="container flexBox marginTop">
         <div class="blackBox">
             <h1 class="h1Header">Register</h1>
             <div v-if="errorMessage" class="invalid-feedback">

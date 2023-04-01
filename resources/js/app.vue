@@ -1,12 +1,10 @@
 <template>
-    <div>
         <router-view v-slot="{ Component }">
             <transition name="nested" mode="out-in">
                 <component :is="Component">
                 </component>
             </transition>
         </router-view>
-    </div>
 </template>
   
 <style>
@@ -16,7 +14,7 @@
 
 .scrollContent {
     overflow-y: auto;
-    height: 2500px;
+    height: 5000px;
     display: flex;
     flex-direction: column;
     overflow-x: hidden;

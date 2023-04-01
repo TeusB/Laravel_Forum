@@ -1,5 +1,5 @@
 <template>
-    <nav id="navbar" v-if="homeNavbar" class="navbar">
+    <nav id="navbar" v-if="homeNavbar" class="navbar" >
         <div class="flexContainer">
             <div class="logoContainer">
                 <img class="logo" src="../../IMG/logo.png" alt="My Image" v-bind:class="{ logoRemove: isActive }">
@@ -64,7 +64,7 @@ export default {
   
 <style>
 @media (max-width: 850px) {
-
+    
     .linkContainer {
         transition: height 0.4s ease-in-out;
         height: 1px;
@@ -188,9 +188,8 @@ export default {
     display: flex;
     flex-direction: row;
     background-color: aqua;
-    position: fixed;
+    position: absolute;
     width: 100%;
-    z-index: 999;
 }
 
 .logo {
@@ -208,7 +207,6 @@ export default {
     margin-left: 5%;
     position: relative;
     display: block;
-
 }
 
 

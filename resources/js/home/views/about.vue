@@ -1,5 +1,5 @@
 <template>
-    <div class=" gx-10 gy-3">
+    <div class=" gx-10 gy-3 marginTop">
         <div class="col-sm-4 ">
             <div class="blue">
                 <h2>Free</h2>

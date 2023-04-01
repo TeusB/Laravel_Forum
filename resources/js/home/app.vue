@@ -1,9 +1,9 @@
 <template>
-  <div class="fakeApp">
+  <div class="homeContainer">
     <transition name="nestedTop" mode="out-in">
       <navbar class="innerTop"></navbar>
     </transition>
-    <div class="scrollContent marginTop">
+    <div class="scrollContent">
       <router-view v-slot="{ Component }">
         <transition name="nestedRight" mode="out-in">
           <component class="innerRight" :is="Component" />
@@ -32,12 +32,14 @@ export default {
 </script>
 
 <style>
-.fakeApp {
+.homeContainer {
   height: 100vh;
   display: flex;
   flex-direction: column;
 }
 .marginTop {
-  margin-top: 100px;
+  margin-top: 90px;
+  margin-bottom: 30px;
 }
+
 </style>

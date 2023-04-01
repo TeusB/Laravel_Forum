@@ -3,6 +3,8 @@ import homeIndex from './home/views/index.vue';
 import homeAbout from './home/views/about.vue';
 import homeLogin from './home/views/login.vue';
 import homeRegister from './home/views/register.vue';
+import homeCv from './home/views/cv.vue';
+
 import homeApp from './home/app.vue';
 
 import dashboardMakePost from './dashboard/views/makePost.vue';
@@ -61,6 +63,12 @@ const routes = [
                 component: homeRegister,
                 name: 'homeRegister',
                 meta: { homeNavbar: true }
+            },
+            {
+                path: '/cv',
+                component: homeCv,
+                name: 'homeCv',
+                meta: {}
             }
         ]
     },
