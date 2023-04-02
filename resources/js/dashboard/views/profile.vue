@@ -107,7 +107,7 @@ export default {
         };
     },
     created() {
-        axios.get('user', {
+        axios.get('api/user', {
             headers: {
                 Authorization: `Bearer ${sessionStorage.getItem('API_TOKEN')}`
             }

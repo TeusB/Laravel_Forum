@@ -77,7 +77,7 @@ export default {
             try {
                 await this.schema.validate(values, { abortEarly: false });
                 if (this.$refs.form.validate()) {
-                    const response = await axios.post('store.comment/' + this.$route.params.id, values, {
+                    const response = await axios.post('api/store.comment/' + this.$route.params.id, values, {
                         headers: {
                             Authorization: `Bearer ${sessionStorage.getItem('API_TOKEN')}`
                         }
@@ -142,7 +142,7 @@ export default {
         }
     },
     created() {
-        axios.get('post/' + this.$route.params.id, {
+        axios.get('api/post/' + this.$route.params.id, {
             headers: {
                 Authorization: `Bearer ${sessionStorage.getItem('API_TOKEN')}`
             }

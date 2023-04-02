@@ -147,6 +147,7 @@ export default {
                     const response = await axios.post('api/login', values);
                     switch (response.status) {
                         case 200:
+                            console.log(response);
                             store.commit('login', response.data.token);
                             this.$router.push('/dashboard');
                             break;

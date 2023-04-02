@@ -137,7 +137,7 @@ export default {
     },
     beforeRouteEnter:
         async (to, from, next) => {
-            await axios.get('post.private/' + to.params.id, {
+            await axios.get('api/post.private/' + to.params.id, {
                 headers: {
                     Authorization: `Bearer ${sessionStorage.getItem('API_TOKEN')}`
                 }
