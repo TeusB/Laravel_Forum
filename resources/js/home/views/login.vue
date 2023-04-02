@@ -157,6 +157,7 @@ export default {
                     }
                 }
             } catch (error) {
+                console.log(error);
                 if (error instanceof Yup.ValidationError) {
                     const errors = {};
                     error.inner.forEach((err) => {
