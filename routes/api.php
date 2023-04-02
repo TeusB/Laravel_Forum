@@ -9,8 +9,9 @@ use App\Http\Controllers\Api\PasswordController;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Middleware\Authenticate;
+use App\Http\Middleware\CorsMiddleware;
 
-Route::post('/login', [AuthenticationController::class, 'authenticate']); //logs user in
+Route::post('/login', [AuthenticationController::class, 'authenticate'])->middleware("cors"); //logs user in
 route::post('/register', [UserController::class, 'store']); //creates account
 
 
