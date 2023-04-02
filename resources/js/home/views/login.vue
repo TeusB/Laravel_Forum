@@ -144,7 +144,7 @@ export default {
             try {
                 await this.schema.validate(values, { abortEarly: false });
                 if (this.$refs.form.validate()) {
-                    const response = await axios.post('login', values);
+                    const response = await axios.post('api/login', values);
                     switch (response.status) {
                         case 200:
                             store.commit('login', response.data.token);
